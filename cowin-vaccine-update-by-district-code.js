@@ -1,6 +1,6 @@
-var dist_code = "141";                  //district code of the district
-var startDate = new Date(2021,05,16);
-var endDate = new Date(2021,05,16);
+var dist_code = "141";                  //district code of the district (Central Delhi in this case)
+var startDate = new Date(2021,05,16);   //start date in yyyy,mm,dd format
+var endDate = new Date(2021,05,16);     //end date in yyyy,mm,dd format
 var waitTime = 7;                       //reload time in seconds
 
 Date.prototype.addDay = function(days) {
