@@ -71,7 +71,7 @@ function seek(){
     console.log("Seek:"+x);
     x= x+1;
     for(i = 0; i<dateArr.length;i++){
-        var URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+dist_code+"&date="+dateArr[i]+"ran"+getRandomInt(0,1000000);
+        var URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+dist_code+"&date="+dateArr[i]+"ran"+getRandomInt(0,1000000);
         fetch(URL)
         .then(data=>{return data.json()})
         .then(res=>{parser(res)})
