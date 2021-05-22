@@ -1,7 +1,9 @@
 var dist_code = "141";                  //district code of the district (Central Delhi in this case)
 var startDate = new Date(2021,05,23);   //start date in yyyy,mm,dd format
-var endDate = new Date(2021,05,21);     //end date in yyyy,mm,dd format
+var endDate = new Date(2021,05,23);     //end date in yyyy,mm,dd format
+var age = 18;                           //enter your age to search for slots for your age 
 var dose = 1;                           //enter 1 to set alert for dose 1 slots, 2 for dose 2 slots and 0 for any of dose 1 or dose 2 slots
+var check_free_of_cost_slots = 1;       //enter 1 to set alert for free of cost slots only, enter 0 to set alert for both paid and free slots
 var waitTime = 7;                       //reload time in seconds
 
 Date.prototype.addDay = function(days) {
@@ -53,6 +55,20 @@ function isAbove18SessionAvailable(sessions) {
                 return true;
     }
   }
+function isAbove45SessionAvailable(sessions) {
+    for (var i=0; i < sessions.length; i++) {
+        var session = sessions[i];
+        if(dose == 0)
+            if (session.min_age_limit == 45 && session.available_capacity > 0) 
+                return true;
+        if(dose == 1)
+            if (session.min_age_limit == 45 && session.available_capacity_dose1 > 0) 
+                return true;
+        if(dose == 2)
+            if (session.min_age_limit == 45 && session.available_capacity_dose2 > 0)
+                return true;
+    }
+  }
 
 function parser(a) {
     var capacity_45_dose1 = 0;
@@ -60,9 +76,19 @@ function parser(a) {
     var capacity_18_dose1 = 0;
     var capacity_18_dose2 = 0;
     for (c in a.centers) {
-        if (isAbove18SessionAvailable(a.centers[c].sessions)) {
-            playSound();
-          }
+        var free_slot = true;
+        if(check_free_of_cost_slots == 1 && a.centers[c].fee_type== "Paid")
+            free_slot= false;
+        if(free_slot){
+            if (age<45 && age>=18)
+                if (isAbove18SessionAvailable(a.centers[c].sessions)) {
+                    playSound();
+                }
+            if (age>=45)
+                if (isAbove45SessionAvailable(a.centers[c].sessions)) {
+                    playSound();
+                }
+        }
         
         for (s in a.centers[c].sessions) {
             if (a.centers[c].sessions[s].min_age_limit == 18 && a.centers[c].sessions[s].available_capacity_dose1 > 0)
